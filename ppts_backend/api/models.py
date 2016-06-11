@@ -25,8 +25,13 @@ class GuardSession(models.Model):
 	token = models.CharField(max_length=60,primary_key=True,unique=True)
 	guard_id = models.ForeignKey(GuardCredentials,on_delete=models.CASCADE)
 	active = models.BooleanField(default=False)
-	login_timestamp = models.DateTimeField(null=True)
-	logout_timestamp = models.DateTimeField(null=True)
+	logindate = models.DateField(null=True)
+	logintime = models.TimeField(null=True)
+	logoutdate = models.DateField(null=True)
+	logouttime = models.TimeField(null=True)
+
+#	login_timestamp = models.DateTimeField(null=True)
+#	logout_timestamp = models.DateTimeField(null=True)
 	#Saving with generated Session ID
 	def save(self,*args,**kwargs):
 		raw = str(self.login_timestamp) + str(self.guard_id.username)
@@ -42,7 +47,10 @@ class LocationDetails(models.Model):
 	token = models.ForeignKey(GuardSession)
 	lattitude = models.DecimalField(max_digits=8,decimal_places=6)
 	longitude = models.DecimalField(max_digits=8,decimal_places=6)
-	timestamp = models.DateTimeField(null=True)
+	arivaldate = models.DateField(null=True)
+	arivaltime = models.TimeField(null=True) 
+
+#	timestamp = models.DateTimeField(null=True)
 	# Returing token ID for reference
 	def __str__(self):
 		return self.token.token
@@ -63,8 +71,13 @@ class AdminOfficerToken(models.Model):
 	token = models.CharField(max_length=64,primary_key=True)
 	officer = models.ForeignKey(AdminOfficer)
 	active = models.BooleanField(default=False)
-	login_timestamp = models.DateTimeField(null=True)
-	logout_timestamp = models.DateTimeField(null=True)
+	logindate = models.DateField(null=True)
+	logintime = models.TimeField(null=True)
+	logoutdate = models.DateField(null=True)
+	logouttime = models.TimeField(null=True)
+
+#	login_timestamp = models.DateTimeField(null=True)
+#	logout_timestamp = models.DateTimeField(null=True)
 
 	#Token generation
 	def save(self,*args,**kwargs):
