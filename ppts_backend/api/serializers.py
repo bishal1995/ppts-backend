@@ -4,7 +4,7 @@ from .models import LocationDetails,GuardCredentials,GuardSession
 class LocationDetailsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = LocationDetails
-		fields = ( 'location','lattitude','longitude','arivaldate','arivaltime' )
+		fields = ( 'token','location','lattitude','longitude','arivaldate','arivaltime')
 
 class GuardCredentialsSerializer(serializers.ModelSerializer):
 	class Meta:

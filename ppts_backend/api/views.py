@@ -398,6 +398,10 @@ class SessionTimestampQuery(View):
 					pass
 				sessions = GuardSession.objects.filter(**queryparameters)
 				serializers = GuardSessionSerializer(sessions,many=True)
+				for session in serializers.data :
+					sessionowner = GuardSession.objects.get(token = session['token'])
+					session['guard_name'] = str(sessionowner.guard_id)
+
 				return  JSONResponse(serializers.data,'')
 			else:
 				return JSONResponse({'error':'Inactive Token'},'')
@@ -442,12 +446,16 @@ class LocationQuery(View):
 					queryparameters['arivaltime__lte'] = str( querydata['time']['timeend'] )
 				else:
 					pass
-				if ( querydata['guard']['data'] == '1' ):
-					queryparameters['token'] = str( querydata['guard']['guard_id'] )
+				if ( querydata['session']['data'] == '1' ):
+					queryparameters['token'] = str( querydata['session']['session_id'] )
 				else:
 					pass
 				sessions = LocationDetails.objects.filter(**queryparameters)
 				serializers = LocationDetailsSerializer(sessions,many=True)
+				for session in serializers.data :
+					sessionowner = GuardSession.objects.get(token = session['token'])
+					session['guard_name'] = str(sessionowner.guard_id)
+					session['guard_id'] = sessionowner.guard_id.guard_id
 				return  JSONResponse(serializers.data,'')
 			else:
 				return JSONResponse({'error':'Inactive Token'},'')
