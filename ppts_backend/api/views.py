@@ -268,9 +268,18 @@ class GetCordinates(View):
 					gaurd = GuardSession.objects.get(token = guardtoken)
 					locationdetails = LocationDetails.objects.all().filter(token = gaurd)
 					serializers = LocationDetailsSerializer(locationdetails,many=True)
-					return JSONResponse( serializers.data , '' )
+					sessionowner = GuardSession.objects.get(token = guardtoken)
+					guardname = str(sessionowner.guard_id)
+					guardID = sessionowner.guard_id.guard_id
+					sessiondata = {}
+					sessiondata['guarddetails'] = {}
+					sessiondata['guarddetails']['guardID'] = guardID
+					sessiondata['guarddetails']['guard_name'] = guardname
+					sessiondata['activity'] = {}
+					sessiondata['activity'] = serializers.data
+					return JSONResponse( sessiondata , '' )
 				except GuardSession.DoesNotExist :
-					return JSONResponse({'error':'Invalid Guard Token'})
+					return JSONResponse({'error':'Invalid Guard Token'},'')
 			else : 
 				return JSONResponse({'error':'Inactive Token'},'')
 		except AdminOfficerToken.DoesNotExist :
